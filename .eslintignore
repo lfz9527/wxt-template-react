@@ -1,0 +1,14 @@
+# 忽略构建输出目录
+dist/
+build/
+
+# 忽略依赖目录
+node_modules/
+
+# 忽略特定文件
+*.min.js
+*.d.ts
+
+# 忽略特定目录下的所有文件
+coverage/
+temp/ 
