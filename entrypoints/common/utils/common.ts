@@ -47,3 +47,23 @@ export const fetchApi = (url: string, option: Option) => {
   })
 
 }
+
+
+// 关闭侧边栏
+export const closeSider = (data: Record<string, any> = {}) => {
+  sendBrowserMessage({
+    option: {
+      type: 'close-side',
+      data
+    }
+  })
+}
+// 打开侧边栏
+export const openSider = (data: Record<string, any> = {}) => {
+  sendBrowserMessage({
+    option: {
+      type: 'open-side',
+      data
+    }
+  })
+}

@@ -10,9 +10,11 @@ export interface ResponseData<T = any> {
   remark?: string | undefined;
 }
 
-const baseUrl = process.env.BASE_URL
+// const baseUrl = process.env.BASE_URL
 
-console.log(baseUrl)
+// console.log(process?.env?.BASE_URL)
+
+const baseUrl = ''
 
 const request = async <T>(url: string, config: RequestConfig): Promise<T> => {
   try {

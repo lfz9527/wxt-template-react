@@ -20,6 +20,7 @@ export default defineConfig({
     permissions: [
       "activeTab",
       "tabs",
+      "sidePanel"
     ],
     host_permissions: [
       "<all_urls>"
@@ -27,5 +28,8 @@ export default defineConfig({
     action: {
       default_title: "Click Me",
     },
+    side_panel: {
+      default_path: "sidePanel/index.html"
+    }
   },
 });

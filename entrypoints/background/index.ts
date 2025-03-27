@@ -15,8 +15,10 @@ export default defineBackground(() => {
   browser.action.setPopup({ popup: "" });
 
   // 监听插件图标点击事件
-  browser.action.onClicked.addListener(async () => { });
+  browser.action.onClicked.addListener(async (tab) => { });
 });
+
+
 
 // 监听标签页激活事件
 browser.tabs.onActivated.addListener((activeInfo) => {
@@ -49,15 +51,45 @@ const request = (methodFn: Function, data: Record<string, any>, callback: (respo
     });
 }
 
+
+browser.runtime.onInstalled.addListener(() => {
+  browser.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+    console.log(2234);
+
+    if (tabs.length > 0) {
+      const tab = tabs[0];
+      chrome.sidePanel.open({ windowId: tab.windowId });
+    }
+  });
+});
+
 // 监听content.js 发送的消息
 browser.runtime.onMessage.addListener((message: SendBrowserMessageType, sender, sendResponse) => {
   const { type, data } = message
 
-  // 接口请求
-  if (type in fetchMethodMap) {
-    const fetch = fetchMethodMap[type as FetchType];
-    request(fetch, data, sendResponse)
-    return true
-  }
+  // 打开侧边栏
+  if (type === "open-side") {
+    const { tab } = sender
+    const { id, windowId } = tab as Record<string, any>
+
+    browser.sidePanel.open({
+      tabId: id,
+      windowId
+    })
+
+
+  } else
+    // 关闭侧边栏
+    if (type === "close-side") {
+      browser.sidePanel.setOptions({ enabled: false });
+      browser.sidePanel.setOptions({ enabled: true });
+
+    } else
+      // 接口请求
+      if (type in fetchMethodMap) {
+        const fetch = fetchMethodMap[type as FetchType];
+        request(fetch, data, sendResponse)
+        return true
+      }
 
 })
