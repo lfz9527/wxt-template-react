@@ -1,38 +1,40 @@
 {
-  "name": "wxt-react-starter",
-  "description": "manifest.json description",
-  "private": true,
-  "version": "0.0.0",
-  "type": "module",
-  "scripts": {
-    "dev": "wxt",
-    "dev:firefox": "wxt -b firefox",
-    "build": "wxt build",
-    "build:firefox": "wxt build -b firefox",
-    "zip": "wxt zip",
-    "zip:firefox": "wxt zip -b firefox",
-    "compile": "tsc --noEmit",
-    "postinstall": "wxt prepare",
-    "clear": "rimraf node_modules pnpm-lock.yaml"
-  },
-  "dependencies": {
-    "@tailwindcss/vite": "^4.1.10",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
-    "tailwindcss": "^4.1.10"
-  },
-  "devDependencies": {
-    "@eslint/js": "^9.22.0",
-    "@types/chrome": "^0.0.280",
-    "@types/react": "^18.3.12",
-    "@types/react-dom": "^18.3.1",
-    "@wxt-dev/module-react": "^1.1.2",
-    "eslint": "^9.22.0",
-    "eslint-plugin-react": "^7.37.4",
-    "prettier": "^3.5.3",
-    "rimraf": "^6.0.1",
-    "typescript": "^5.6.3",
-    "typescript-eslint": "^8.27.0",
-    "wxt": "^0.19.29"
-  }
+    "name": "wxt-react-starter",
+    "description": "manifest.json description",
+    "private": true,
+    "version": "0.0.0",
+    "type": "module",
+    "scripts": {
+        "dev": "wxt",
+        "dev:firefox": "wxt -b firefox",
+        "build": "wxt build",
+        "build:firefox": "wxt build -b firefox",
+        "zip": "wxt zip",
+        "zip:firefox": "wxt zip -b firefox",
+        "compile": "tsc --noEmit",
+        "postinstall": "wxt prepare",
+        "clear": "rimraf node_modules pnpm-lock.yaml",
+        "test": "vitest"
+    },
+    "dependencies": {
+        "@tailwindcss/vite": "^4.1.10",
+        "react": "^18.3.1",
+        "react-dom": "^18.3.1",
+        "tailwindcss": "^4.1.10"
+    },
+    "devDependencies": {
+        "@eslint/js": "^9.22.0",
+        "@types/chrome": "^0.0.280",
+        "@types/react": "^18.3.12",
+        "@types/react-dom": "^18.3.1",
+        "@wxt-dev/module-react": "^1.1.2",
+        "eslint": "^9.22.0",
+        "eslint-plugin-react": "^7.37.4",
+        "prettier": "^3.5.3",
+        "rimraf": "^6.0.1",
+        "typescript": "^5.6.3",
+        "typescript-eslint": "^8.27.0",
+        "vitest": "^3.2.3",
+        "wxt": "^0.19.29"
+    }
 }
