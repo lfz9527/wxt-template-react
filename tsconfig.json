@@ -10,6 +10,7 @@
             "@constants/*": ["./src/constants/*"],
             "@content/*": ["./src/content/*"],
             "@sidePanel/*": ["./src/sidePanel/*"],
+            "@background/*": ["./src/background/*"],
             "@utils/*": ["./src/utils/*"]
         }
     }
