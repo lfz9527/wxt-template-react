@@ -1,22 +1,19 @@
 import ReactDOM from 'react-dom/client'
 import {ContentScriptContext} from 'wxt/client'
-import './style.css'
-import Content from '@/content'
-
-console.log(browser.runtime.getURL('/sidepanel.html'))
+import '@assets/css/tailwind.css'
+import Content from '@content/index'
 
 export default defineContentScript({
     matches: ['<all_urls>'],
     cssInjectionMode: 'ui',
     async main(ctx) {
         console.log('脚本加载成功')
-        const comHover = await createShadowUi(ctx)
-        comHover.mount()
+        await createBaseApp(ctx)
     }
 })
 
-async function createShadowUi(ctx: ContentScriptContext) {
-    const hoverMask = await createShadowRootUi(ctx, {
+async function createBaseApp(ctx: ContentScriptContext) {
+    const App = await createShadowRootUi(ctx, {
         name: 'wxt-template',
         position: 'inline',
         anchor: 'body',
@@ -37,5 +34,6 @@ async function createShadowUi(ctx: ContentScriptContext) {
             elements?.wrapper.remove()
         }
     })
-    return hoverMask
+    App.mount()
+    return App
 }

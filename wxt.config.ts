@@ -1,21 +1,21 @@
-import { defineConfig } from 'wxt'
-import type { WxtViteConfig } from 'wxt'
+import {defineConfig} from 'wxt'
+import type {WxtViteConfig} from 'wxt'
+import tailwindcss from '@tailwindcss/vite'
+import path from 'path'
 
+const resolve = (dir: string) => path.join(__dirname, dir)
 // vite配置
 const viteConfig: WxtViteConfig = {
-    css: {
-        preprocessorOptions: {
-            less: {
-                javascriptEnabled: true
-            }
-        }
-    },
+    plugins: [tailwindcss()],
     resolve: {
         alias: {
-            '@': './src',
-            '@/components': './src/components',
-            '@/assets': './src/assets',
-            '@/content': './src/content'
+            '@': resolve('src'),
+            '@assets': resolve('src/assets'),
+            '@constants': resolve('src/constants'),
+            '@components': resolve('src/components'),
+            '@content': resolve('src/content'),
+            '@sidePanel': resolve('src/sidePanel'),
+            '@utils': resolve('src/utils')
         }
     }
 }
@@ -52,5 +52,10 @@ export default defineConfig({
     outDir: 'dist',
     modules: ['@wxt-dev/module-react'],
     vite: () => viteConfig,
-    manifest
+    manifest,
+    runner: {
+        chromiumArgs: [
+            '--disable-features=DisableLoadExtensionCommandLineSwitch'
+        ]
+    }
 })
