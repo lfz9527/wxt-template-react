@@ -16,6 +16,7 @@ const viteConfig: WxtViteConfig = {
             '@content': resolve('src/content'),
             '@sidePanel': resolve('src/sidePanel'),
             '@background': resolve('src/background'),
+            '@hooks': resolve('src/hooks'),
             '@utils': resolve('src/utils')
         }
     }
@@ -26,7 +27,7 @@ const manifest = {
     version: '1.0.0',
     name: 'wxt-template',
     description: '这是一个 wxt-dev 的开发模板',
-    permissions: ['activeTab', 'tabs', 'sidePanel'],
+    permissions: ['activeTab', 'tabs', 'sidePanel', 'storage'],
     host_permissions: ['<all_urls>'],
     icons: {
         '16': 'icon/16.png',
@@ -50,7 +51,6 @@ export default defineConfig({
     extensionApi: 'chrome',
     // 公共资源目录
     publicDir: '../public',
-    outDir: 'dist',
     modules: ['@wxt-dev/module-react'],
     vite: () => viteConfig,
     manifest,

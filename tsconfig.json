@@ -11,7 +11,9 @@
             "@content/*": ["./src/content/*"],
             "@sidePanel/*": ["./src/sidePanel/*"],
             "@background/*": ["./src/background/*"],
-            "@utils/*": ["./src/utils/*"]
+            "@utils/*": ["./src/utils/*"],
+            "@components/*": ["./src/components/*"],
+            "@hooks/*": ["./src/hooks/*"]
         }
     }
 }
