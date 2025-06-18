@@ -17,7 +17,8 @@ const viteConfig: WxtViteConfig = {
             '@sidePanel': resolve('src/sidePanel'),
             '@background': resolve('src/background'),
             '@hooks': resolve('src/hooks'),
-            '@utils': resolve('src/utils')
+            '@utils': resolve('src/utils'),
+            '@services': resolve('src/services')
         }
     }
 }
