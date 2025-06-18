@@ -24,22 +24,36 @@ const isFullUrl = (url: string): boolean => {
 // 默认错误信息：请求失败，请稍后重试
 const defaultCodeMsg = 'Request failed, please try again later'
 
-// 常见系统错误码映射
-export const codeMsgMap: Record<number, string> = {
-    // 请求的资源不存在
-    404: 'The requested resource does not exist',
-    // 服务器内部错误
-    500: 'Internal server error',
-    // 网关错误
-    502: 'Bad gateway',
-    // 服务不可用
-    503: 'Service unavailable',
-    // 网关超时
-    504: 'Gateway timeout',
-    // 请求被取消
-    10001: 'Request was cancelled',
-    // 自定义系统错误码
-    10086: defaultCodeMsg
+/**
+ * 创建错误信息
+ * @param status
+ * @param message
+ * @returns
+ */
+const createErrorMessage = (status: number, message?: string): string => {
+    switch (status) {
+        case 404:
+            // 请求的资源不存在
+            return '404 Not Found'
+
+        case 500:
+            // 服务器内部错误
+            return 'Internal server error'
+        case 502:
+            // 网关错误
+            return 'Bad gateway'
+        case 503:
+            // 服务不可用
+            return 'Service unavailable'
+        case 504:
+            // 网关超时
+            return 'Gateway timeout'
+        case 10001:
+            // 请求被取消
+            return 'Request was cancelled'
+        default:
+            return message ?? defaultCodeMsg
+    }
 }
 
 class Http {
@@ -118,7 +132,7 @@ class Http {
         // 请求控制器
         const controller = this.createController(cancelToken)
 
-        let status = 0
+        let status = 10086
         let code = -1
         let timeoutId: ReturnType<typeof setTimeout> | null = null
 
@@ -128,7 +142,7 @@ class Http {
                 timeoutId = setTimeout(() => {
                     controller.abort()
                     status = 504
-                    reject(new Error(codeMsgMap[status])) // 网关超时
+                    reject(new Error(createErrorMessage(status))) // 网关超时
                 }, timeout)
             })
 
@@ -143,9 +157,11 @@ class Http {
 
             const response = await Promise.race([fetchPromise, timeoutPromise])
 
+            if (response.status) {
+                status = response.status
+            }
             if (!response.ok) {
-                status = response.status || 10086
-                throw new Error(codeMsgMap[status])
+                throw new Error(createErrorMessage(status))
             }
             if (isSSE) {
                 success = response.body as unknown as T
@@ -162,7 +178,7 @@ class Http {
 
             if (controller.signal.aborted) {
                 finalError.status = 10001
-                finalError.errMsg = codeMsgMap[finalError.status]
+                finalError.errMsg = createErrorMessage(status)
             }
         } finally {
             timeoutId && clearTimeout(timeoutId)
