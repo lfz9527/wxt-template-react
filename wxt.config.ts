@@ -45,17 +45,14 @@ const manifest = {
     }
 }
 
-// See https://wxt.dev/api/config.html
 export default defineConfig({
     srcDir: 'src',
     entrypointsDir: 'entries',
-    extensionApi: 'chrome',
-    // 公共资源目录
-    publicDir: '../public',
     modules: ['@wxt-dev/module-react'],
     vite: () => viteConfig,
     manifest,
-    runner: {
+    // @ts-ignore
+    webExt: {
         chromiumArgs: [
             '--disable-features=DisableLoadExtensionCommandLineSwitch'
         ]

@@ -1,5 +1,4 @@
-import {browser, type Browser} from '@wxt-dev/browser'
-import {useEffect, useState} from 'react'
+import type {Browser} from 'wxt/browser'
 
 type Unwrap<T> = T extends Browser.events.Event<infer Inner> ? Inner : never
 

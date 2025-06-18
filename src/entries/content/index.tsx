@@ -1,18 +1,18 @@
 import ReactDOM from 'react-dom/client'
-import {ContentScriptContext} from 'wxt/client'
+import type {IsolatedWorldContentScriptDefinition} from 'wxt'
 import '@assets/css/tailwind.css'
 import Content from '@content/index'
 
-export default defineContentScript({
-    matches: ['<all_urls>'],
-    cssInjectionMode: 'ui',
-    async main(ctx) {
-        console.log('脚本加载成功')
-        await createBaseApp(ctx)
-    }
-})
+type ContentScriptContext = Parameters<
+    IsolatedWorldContentScriptDefinition['main']
+>[0]
 
-async function createBaseApp(ctx: ContentScriptContext) {
+/**
+ * 创建基础应用
+ * @param ctx ContentScriptContext
+ * @returns
+ */
+const createBaseApp = (ctx: ContentScriptContext) => async () => {
     const App = await createShadowRootUi(ctx, {
         name: 'wxt-template',
         position: 'inline',
@@ -37,3 +37,12 @@ async function createBaseApp(ctx: ContentScriptContext) {
     App.mount()
     return App
 }
+
+export default defineContentScript({
+    matches: ['<all_urls>'],
+    cssInjectionMode: 'ui',
+    async main(ctx: ContentScriptContext) {
+        console.log('脚本加载成功')
+        createBaseApp(ctx)
+    }
+})
