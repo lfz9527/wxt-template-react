@@ -36,6 +36,8 @@ export const codeMsgMap: Record<number, string> = {
     503: 'Service unavailable',
     // 网关超时
     504: 'Gateway timeout',
+    // 请求被取消
+    10001: 'Request was cancelled',
     // 自定义系统错误码
     10086: defaultCodeMsg
 }
@@ -88,7 +90,7 @@ class Http {
     public async request<T = any, D = any>(
         config: RequestConfig<D>
     ): Promise<[ResponseError | null, T | null]> {
-        let error: ResponseError | null = null
+        let finalError: ResponseError | null = null
         let success: T | null = null
 
         const {
@@ -108,7 +110,7 @@ class Http {
         const fetchUrl = isFullUrl(url) ? url : `${baseURL}${url}`
         const queryString = params ? `?${new URLSearchParams(params)}` : ''
 
-        const fetchHeaders: HeadersInit = {
+        const fetchHeaders: RequestConfig['headers'] = {
             'Content-Type': 'application/json',
             ...headers
         }
@@ -116,17 +118,19 @@ class Http {
         // 请求控制器
         const controller = this.createController(cancelToken)
 
-        let status,
-            code = -1
+        let status = 0
+        let code = -1
+        let timeoutId: ReturnType<typeof setTimeout> | null = null
 
         try {
             // 请求超时控制
-            const timeoutId = setTimeout(() => {
-                status = 504
-                controller.abort(
-                    new DOMException(codeMsgMap[status], 'TimeoutError')
-                )
-            }, timeout)
+            const timeoutPromise = new Promise<Response>((_, reject) => {
+                timeoutId = setTimeout(() => {
+                    controller.abort()
+                    status = 504
+                    reject(new Error(codeMsgMap[status])) // 网关超时
+                }, timeout)
+            })
 
             const options: RequestConfig = {
                 headers: {...fetchHeaders},
@@ -135,8 +139,9 @@ class Http {
                 ...rest
             }
             const urlWithParams = `${fetchUrl}${queryString}`
-            const response = await fetch(urlWithParams, options)
-            clearTimeout(timeoutId)
+            const fetchPromise = await fetch(urlWithParams, options)
+
+            const response = await Promise.race([fetchPromise, timeoutPromise])
 
             if (!response.ok) {
                 status = response.status || 10086
@@ -148,14 +153,25 @@ class Http {
                 success = (await response.json()) as T
             }
         } catch (error: any) {
-            error = {
+            const errMsg = error.message || defaultCodeMsg
+            finalError = {
                 status,
-                errMsg: error.message || defaultCodeMsg,
+                errMsg,
                 code
+            }
+
+            if (controller.signal.aborted) {
+                finalError.status = 10001
+                finalError.errMsg = codeMsgMap[finalError.status]
+            }
+        } finally {
+            timeoutId && clearTimeout(timeoutId)
+            if (cancelToken) {
+                this.pendingRequests.delete(cancelToken)
             }
         }
 
-        return [error, success]
+        return [finalError, success]
     }
 }
 
