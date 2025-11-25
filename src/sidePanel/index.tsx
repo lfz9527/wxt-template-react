@@ -1,9 +1,9 @@
-import {StrictMode} from 'react'
-import {createRoot} from 'react-dom/client'
+import { StrictMode } from 'react'
+import { createRoot } from 'react-dom/client'
 import '@assets/css/tailwind.css'
-import {useWxtStorage} from '@/hooks'
+import { useWxtStorage } from '#imports'
 
-import {storage} from '@wxt-dev/storage'
+import { storage } from '@wxt-dev/storage'
 
 // Define your storage item
 const counterState = storage.defineItem('local:counter', {
@@ -16,7 +16,11 @@ function Counter() {
     return (
         <div>
             <p>Count: {count}</p>
-            <button onClick={() => setCount(count + 1)}>Increment</button>
+            <button
+                onClick={() => setCount(count + 1)}
+            >
+                Increment
+            </button>
         </div>
     )
 }

@@ -12,7 +12,7 @@ export interface Json<V = any> {
  * # 类包装
  */
 export type ClassConstructor<T = any> = {
-    new (...args: any[]): T
+    new(...args: any[]): T
 }
 
 export type EnumKey = string | number | boolean
@@ -23,12 +23,4 @@ export interface IframeActionDictionary<K extends EnumKey = EnumKey> {
     key: K
     // 字典的显示标题
     label: string
-    // 是否被禁用
-    disabled: boolean
-    // 权限列表
-    permissionList: string[]
-    // 响应最大次数
-    maxCount: number
-    // 响应次数
-    count: number
 }
