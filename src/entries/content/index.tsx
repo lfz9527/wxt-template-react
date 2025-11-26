@@ -1,5 +1,5 @@
 import ReactDOM from 'react-dom/client'
-import type {IsolatedWorldContentScriptDefinition} from 'wxt'
+import type { IsolatedWorldContentScriptDefinition } from 'wxt'
 import '@assets/css/tailwind.css'
 import Content from '@content/index'
 
@@ -12,12 +12,12 @@ type ContentScriptContext = Parameters<
  * @param ctx ContentScriptContext
  * @returns
  */
-const createBaseApp = (ctx: ContentScriptContext) => async () => {
+const createBaseApp = async (ctx: ContentScriptContext) => {
     const App = await createShadowRootUi(ctx, {
         name: 'wxt-template',
         position: 'inline',
         anchor: 'body',
-        isolateEvents: false,
+        append: 'first',
         onMount(container) {
             const wrapper = document.createElement('div')
             wrapper.id = 'app'
