@@ -1,14 +1,15 @@
+import { sendMessage } from '@/bridge/content-script'
+
 const Content = () => {
 
 
     useEffect(() => {
-        browser.runtime.connect({
-            name: 'sss'
-        })
+        console.log(222)
+        sendMessage()
     }, [])
 
 
-    return <div className='text-red-100'>content</div>
+    return <div className='text-red-100'>11content</div>
 }
 
 export default Content
