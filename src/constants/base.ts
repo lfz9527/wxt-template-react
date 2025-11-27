@@ -51,3 +51,8 @@ export class AirEnum<K extends EnumKey = string>
         return this.key === key
     }
 }
+
+/**
+ * 提取某个 AirEnum 子类的所有 key 类型
+ */
+export type AirEnumKey<E extends ClassConstructor<any>> = InstanceType<E>['key']

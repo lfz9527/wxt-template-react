@@ -2,7 +2,9 @@ const Content = () => {
 
 
     useEffect(() => {
-
+        browser.runtime.connect({
+            name: 'sss'
+        })
     }, [])
 
 

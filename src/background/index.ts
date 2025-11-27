@@ -15,16 +15,3 @@ browser.tabs.onActivated.addListener((activeInfo) => {
 browser.runtime.onInstalled.addListener(() => {
     console.log('监听插件安装状态')
 })
-
-// 监听content.js 发送的消息
-const listenerHandle = async (message: any, sender: any, sendResponse: any) => {
-    console.log(message)
-    console.log(sender)
-    console.log(sendResponse)
-}
-browser.runtime.onMessage.addListener((message, sender, sendResponse) => {
-    listenerHandle(message, sender, sendResponse).catch((error) => {
-        sendResponse?.(error)
-    })
-    return true
-})
