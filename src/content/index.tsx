@@ -1,15 +1,14 @@
-import { sendMessage } from '@/bridge/content-script'
+
 
 const Content = () => {
 
+    const handleSend = async () => { }
 
-    useEffect(() => {
-        console.log(222)
-        sendMessage()
-    }, [])
-
-
-    return <div className='text-red-100'>11content</div>
+    return (
+        <div className='flex justify-end'>
+            <button onClick={handleSend} className='p-3 bg-blue-600 text-white rounded-2xl cursor-pointer active:opacity-90'>测试发送消息给background</button>
+        </div>
+    )
 }
 
 export default Content

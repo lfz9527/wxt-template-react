@@ -1,5 +1,5 @@
-import {defineConfig} from 'wxt'
-import type {WxtViteConfig} from 'wxt'
+import { defineConfig } from 'wxt'
+import type { WxtViteConfig } from 'wxt'
 import tailwindcss from '@tailwindcss/vite'
 import path from 'path'
 
