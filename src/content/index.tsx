@@ -1,8 +1,13 @@
-
+import { sendMessage } from '@/utils/messaging'
 
 const Content = () => {
 
-    const handleSend = async () => { }
+    const handleSend = async () => {
+
+        const data = await sendMessage('getStringLength', {
+            s: "ssss"
+        })
+    }
 
     return (
         <div className='flex justify-end'>

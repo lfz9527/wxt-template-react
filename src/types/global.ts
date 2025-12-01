@@ -1,12 +1,7 @@
 /**
  * # 标准的 `JSON` 数据
  */
-export interface Json<V = any> {
-    /**
-     * ### `JSON` 的键
-     */
-    [x: string]: V
-}
+export type anyObject = Record<string, any>
 
 /**
  * # 类包装

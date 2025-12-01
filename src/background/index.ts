@@ -1,4 +1,4 @@
-import { onMessage, sendMessage, sendAllTabs } from './msg'
+import { onMessage, sendMessage, sendAllTabs } from '@/utils/messaging'
 export default defineBackground(() => {
     // 左键点击图标 (如果有 popup 是不会触发的，可以执行 browser.action.setPopup({ popup: '' }) 来监听事件)
     browser.action.setPopup({ popup: '' })
@@ -12,9 +12,15 @@ export default defineBackground(() => {
 
 browser.tabs.onActivated.addListener((activeInfo) => {
     console.log('监听标签页激活事件')
-    sendAllTabs("getStringLength")
 })
 
 browser.runtime.onInstalled.addListener(() => {
     console.log('监听插件安装状态')
+})
+
+
+onMessage('getStringLength', (d) => {
+    console.log("===", d)
+
+    return
 })
