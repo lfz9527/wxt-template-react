@@ -1,5 +1,6 @@
 import ReactDOM from 'react-dom/client'
 import type { IsolatedWorldContentScriptDefinition } from 'wxt'
+import contentMessages from '@/messages/content'
 import Content from '@/content'
 
 type ContentScriptContext = Parameters<
@@ -42,6 +43,8 @@ export default defineContentScript({
     cssInjectionMode: 'ui',
     async main(ctx: ContentScriptContext) {
         console.log('脚本加载成功')
+        // 注册全局监听器
+        contentMessages.registerListener()
         createBaseApp(ctx)
     }
 })

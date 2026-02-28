@@ -1,15 +1,21 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-import { useWxtStorage } from '#imports'
-import { storage } from '@wxt-dev/storage'
+import useStoreDemo from './store/demo'
 
-// Define your storage item
-const counterState = storage.defineItem('local:counter', {
-    fallback: 0
-})
+import MessageBus from '@/messages/message'
 
 function Counter() {
-    const [count, setCount] = useWxtStorage(counterState)
+    const [count, setCount] = useStoreDemo()
+    useEffect(() => {
+        MessageBus.registerListener()
+
+        const tt = MessageBus.on('tt', ({ data }) => {
+            console.log('333333333', data)
+        })
+        return () => {
+            tt()
+        }
+    }, [])
 
     return (
         <div>
@@ -18,6 +24,20 @@ function Counter() {
                 onClick={() => setCount(count + 1)}
             >
                 Increment
+            </button>
+
+            <button
+                onClick={async () => {
+                    try {
+                        await MessageBus.sendToTab('t', {
+                            info: 2233
+                        })
+                    } catch (error) {
+                        console.log(333, error)
+                    }
+                }}
+            >
+                测试消息传递
             </button>
         </div>
     )
