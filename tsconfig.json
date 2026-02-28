@@ -1,20 +1,9 @@
 {
-    "extends": "./.wxt/tsconfig.json",
-    "compilerOptions": {
-        "allowImportingTsExtensions": true,
-        "jsx": "react-jsx",
-        "baseUrl": "./",
-        "paths": {
-            "@/*": ["./src/*"],
-            "@assets/*": ["./src/assets/*"],
-            "@constants/*": ["./src/constants/*"],
-            "@content/*": ["./src/content/*"],
-            "@sidePanel/*": ["./src/sidePanel/*"],
-            "@background/*": ["./src/background/*"],
-            "@utils/*": ["./src/utils/*"],
-            "@components/*": ["./src/components/*"],
-            "@hooks/*": ["./src/hooks/*"],
-            "@services/*": ["./src/services/*"]
-        }
-    }
+  "extends": "./.wxt/tsconfig.json",
+  "compilerOptions": {
+    "allowImportingTsExtensions": true,
+    "jsx": "react-jsx"
+    // 不能写baseUrl 要不然自定义别名不生效
+    // "baseUrl": "."
+  }
 }

@@ -7,6 +7,12 @@ interface GetTabConfig {
   filter?: boolean,
   currentWindow?: boolean
 }
+
+/**
+ * 获取当前浏览器全部Tab
+ * @param config 
+ * @returns 
+ */
 export const getAllTabs = async (config: GetTabConfig = {}): Promise<Browser.tabs.Tab[]> => {
   const { filter = true, currentWindow = true } = config
   const allTabs = await browser.tabs.query({ currentWindow })

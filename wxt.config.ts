@@ -1,24 +1,14 @@
 import { defineConfig } from 'wxt'
 import type { WxtViteConfig } from 'wxt'
-import tailwindcss from '@tailwindcss/vite'
 import path from 'path'
 
 const resolve = (dir: string) => path.join(__dirname, dir)
+
 // vite配置
 const viteConfig: WxtViteConfig = {
-    plugins: [tailwindcss()],
     resolve: {
         alias: {
             '@': resolve('src'),
-            '@assets': resolve('src/assets'),
-            '@constants': resolve('src/constants'),
-            '@components': resolve('src/components'),
-            '@content': resolve('src/content'),
-            '@sidePanel': resolve('src/sidePanel'),
-            '@background': resolve('src/background'),
-            '@hooks': resolve('src/hooks'),
-            '@utils': resolve('src/utils'),
-            '@services': resolve('src/services')
         }
     }
 }

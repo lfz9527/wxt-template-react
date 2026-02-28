@@ -1,58 +1,99 @@
-import { IframeActionDictionary, EnumKey, ClassConstructor, Json } from '@/types'
+import { type anyObject } from '@/types'
 
-export class AirEnum<K extends EnumKey = string>
-    implements IframeActionDictionary<K> {
-    // 枚举的值
+// key的类型
+type EnumKey = string | number | boolean
+
+/**
+ * # 类包装
+ */
+export type ClassConstructor<T = any> = {
+    new(...args: any[]): T
+}
+
+export interface EnumDic<K extends EnumKey = EnumKey> {
+    // 字典的值
     key: K
-    // 枚举的描述
-    label!: string
-
-    constructor(
-        key: K,
-        label: string,
-    ) {
-        this.key = key
-        this.label = label
-    }
-
-    // 获取label
-    static getLabel(key: EnumKey) {
-        return this.get(key)?.label
-    }
-
-    // 获取key
-    getKey() {
-        return this.key
-    }
-
-    // 查找一个枚举选项
-    static get<K extends EnumKey, E extends AirEnum<K>>(
-        this: ClassConstructor<E>,
-        key: EnumKey
-    ): E | null {
-        return (
-            (this as Json).toArray().find((item: E) => item.key === key) || null
-        )
-    }
-
-    /**
-     * 将枚举转为数组
-     * @param this
-     * @returns
-     */
-    static toArray<K extends EnumKey, E extends AirEnum<K>>(
-        this: ClassConstructor<E>
-    ): E[] {
-        return Object.values(this).filter((item) => item instanceof this)
-    }
-
-    // 判断key 是否相等
-    equalsKey(key: EnumKey): boolean {
-        return this.key === key
-    }
+    // 字典的显示标题
+    label: string
 }
 
 /**
  * 提取某个 AirEnum 子类的所有 key 类型
  */
-export type AirEnumKey<E extends ClassConstructor<any>> = InstanceType<E>['key']
+export type EnumKeys<E extends ClassConstructor<any>> = InstanceType<E>['key']
+
+/**
+ * 生成 key -> 任意值类型 的映射
+ */
+export type EnumKeyMap<E extends ClassConstructor<any>, V = any> = Record<
+    Extract<EnumKeys<E>, string | number>,
+    V
+>
+
+// 枚举类
+abstract class BaseEnumCls<K extends EnumKey = string> implements EnumDic<K> {
+    readonly key: K
+    readonly label: string
+
+    constructor(key: K, label: string) {
+        this.key = key
+        this.label = label
+    }
+
+    /**
+     * 将枚举类转为数组
+     * @param this
+     * @returns
+     */
+    static toArray<K extends EnumKey, E extends BaseEnumCls<K>>(
+        this: ClassConstructor<E>
+    ): E[] {
+        return Object.values(this).filter((item) => item instanceof this)
+    }
+
+    /**
+     * 查找一个枚举类选项
+     * @param this
+     * @param key
+     * @returns
+     */
+    static get<K extends EnumKey, E extends BaseEnumCls<K>>(
+        this: ClassConstructor<E>,
+        key: EnumKey
+    ): E | null {
+        return (
+            (this as anyObject).toArray().find((item: E) => item.key === key) ||
+            null
+        )
+    }
+
+    /**
+     * 通过key 获取label
+     * @param this
+     * @param key
+     * @returns
+     */
+    static getLabel<K extends EnumKey, E extends BaseEnumCls<K>>(
+        this: ClassConstructor<E>,
+        key: K
+    ): string | null {
+        return (this as anyObject).get(key)?.label ?? null
+    }
+
+    getKey(): K {
+        return this.key
+    }
+
+    equalsKey(key: K): boolean {
+        return this.key === key
+    }
+    /**
+     * ## 判断 `Key` 是否不相等
+     * @param key `Key`
+     */
+    notEqualsKey(key: K): boolean {
+        return this.key !== key
+    }
+}
+
+export default BaseEnumCls

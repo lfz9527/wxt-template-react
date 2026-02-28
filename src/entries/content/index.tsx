@@ -1,7 +1,6 @@
 import ReactDOM from 'react-dom/client'
 import type { IsolatedWorldContentScriptDefinition } from 'wxt'
-import '@assets/css/tailwind.css'
-import Content from '@content/index'
+import Content from '@/content'
 
 type ContentScriptContext = Parameters<
     IsolatedWorldContentScriptDefinition['main']

@@ -1,4 +1,4 @@
-import type {Browser} from 'wxt/browser'
+import type { Browser } from 'wxt/browser'
 
 type Unwrap<T> = T extends Browser.events.Event<infer Inner> ? Inner : never
 
@@ -12,7 +12,7 @@ const useTabs = (): {
     )
 
     const sync = async () => {
-        const tabs = await browser.tabs.query({currentWindow: true})
+        const tabs = await browser.tabs.query({ currentWindow: true })
         const activeTab = tabs.find((tab) => tab.active)
         setActiveTab(activeTab)
         setTabs(tabs)
@@ -22,16 +22,16 @@ const useTabs = (): {
     useEffect(() => {
         let isMounted = true
 
-        const activateListener: Unwrap<Browser.tabs.TabActivatedEvent> = (
+        const activateListener: Unwrap<typeof Browser.tabs.onActivated> = (
             activeInfo
         ) => {
-            console.debug('Tab activated')
+            console.debug('Tab activated', activeInfo)
             if (isMounted) {
                 sync()
             }
         }
 
-        const updateListener: Unwrap<Browser.tabs.TabUpdatedEvent> = (
+        const updateListener: Unwrap<typeof Browser.tabs.onUpdated> = (
             tabId,
             changeInfo,
             tab
@@ -44,14 +44,14 @@ const useTabs = (): {
             }
         }
 
-        const createListener: Unwrap<Browser.tabs.TabCreatedEvent> = (tab) => {
+        const createListener: Unwrap<typeof Browser.tabs.onCreated> = (tab) => {
             console.debug('Tab created', tab)
             if (isMounted) {
                 sync()
             }
         }
 
-        const removeListener: Unwrap<Browser.tabs.TabRemovedEvent> = (
+        const removeListener: Unwrap<typeof Browser.tabs.onRemoved> = (
             tabId
         ) => {
             console.debug('Tab removed', tabId)

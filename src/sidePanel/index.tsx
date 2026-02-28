@@ -1,8 +1,6 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-import '@assets/css/tailwind.css'
 import { useWxtStorage } from '#imports'
-
 import { storage } from '@wxt-dev/storage'
 
 // Define your storage item
